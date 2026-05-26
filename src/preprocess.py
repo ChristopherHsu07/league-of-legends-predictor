@@ -67,3 +67,70 @@ def build_team_profiles(team_df):
     # print(team_profiles.isnull().sum())  # check for NaNs
     
     return team_profiles
+
+def build_region_weights(team_df):
+    # map regional leagues to their region
+    regional_league_map = {
+        'LCK':   'LCK',
+        'LCKC':  'LCK',
+        'LPL':   'LPL',
+        'LEC':   'LEC',
+        'NLC':   'LEC',
+        'LCS':   'LCS',
+        'LTA N': 'LTA',
+        'LTA S': 'LTA',
+        'LTA':   'LTA',
+        'PCS':   'PCS',
+        'VCS':   'VCS',
+        'LJL':   'LJL',
+        'CBLOL': 'CBLOL',
+        'TCL':   'TCL',
+        'LCO':   'LCO',
+    }
+
+    intl_leagues = ['WLDs', 'MSI', 'EWC', 'FST', 'Asia Master', 'IC']
+
+    # get each team's home region from regional games only
+    regional_df = team_df[team_df['league'].isin(regional_league_map.keys())]
+    team_region = (
+        regional_df
+        .groupby('teamname')['league']
+        .agg(lambda x: x.mode()[0])  # most common league for that team
+        .map(regional_league_map)     # convert league to region
+    )
+
+    # filter to international games only
+    intl_df = team_df[team_df['league'].isin(intl_leagues)].copy()
+
+    if intl_df.empty:
+        print("warning: no international data found, using equal weights")
+        return {}
+
+    # attach home region to each international game
+    intl_df['region'] = intl_df['teamname'].map(team_region)
+
+    # drop teams we couldn't map to a region
+    unmapped = intl_df[intl_df['region'].isna()]['teamname'].unique()
+    if len(unmapped) > 0:
+        print(f"warning: could not map these teams to a region: {unmapped}")
+    intl_df = intl_df.dropna(subset=['region'])
+
+    print(f"Building region weights from {len(intl_df)} international games")
+
+    # win rate per region at international events
+    region_winrates = intl_df.groupby('region')['result'].mean()
+    region_counts   = intl_df.groupby('region')['result'].count()
+
+    print("\nRaw international win rates:")
+    for region in region_winrates.sort_values(ascending=False).index:
+        print(f"  {region}: {region_winrates[region]:.3f} ({region_counts[region]} games)")
+
+    # normalize around 1.0
+    mean_wr = region_winrates.mean()
+    region_weights = (region_winrates / mean_wr).to_dict()
+
+    print("\nNormalized region weights:")
+    for region, weight in sorted(region_weights.items(), key=lambda x: -x[1]):
+        print(f"  {region}: {weight:.3f}")
+
+    return region_weights
