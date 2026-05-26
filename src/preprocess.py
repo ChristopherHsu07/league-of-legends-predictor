@@ -17,7 +17,7 @@ def build_team_df(filename):
 
     # predictors
     features = [
-        'gameid', 'teamname', 'result',
+        'gameid', 'teamname', 'result', 'league',
         'golddiffat15', 'xpdiffat15', 'csdiffat15',
         'firstdragon', 'firstbaron', 'firsttower',
         'golddiffat25', 'killsat25', 'opp_killsat25',  # for kill diff at 25
