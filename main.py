@@ -16,9 +16,6 @@ team_profiles = build_team_profiles(team_df)
 matchups = build_matchups(team_df)
 
 region_weights = build_region_weights(team_df)
-print(region_weights)  # sanity check
-
-print(team_profiles.columns.tolist())
 
 model, scaler, feature_cols, x_test_scaled, y_test = train_model(matchups)
 
