@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 regional_league_map = {
     'LCK':   'LCK',
@@ -40,7 +41,7 @@ def build_team_df(filenames):
 
     # predictors
     features = [
-        'gameid', 'teamname', 'result', 'league',
+        'gameid', 'date', 'teamname', 'result', 'league',
         'golddiffat15', 'xpdiffat15', 'csdiffat15',
         'firstdragon', 'firstbaron', 'firsttower',
         'golddiffat25', 'killsat25', 'opp_killsat25',  # for kill diff at 25
@@ -54,17 +55,57 @@ def build_team_df(filenames):
     
     return team_df
 
-def build_team_profiles(team_df):
+def _weighted_agg(team_df, agg_features, weight_col):
+    '''
+    Compute weighted mean and std per team for each feature in agg_features,
+    plus weighted win rate. Handles NaN values by excluding them per feature.
+
+    Returns a DataFrame indexed by teamname with columns:
+        <feat>, <feat>_std  for each feat in agg_features, plus 'result'.
+    '''
+    records = []
+    for name, group in team_df.groupby('teamname'):
+        w_all = group[weight_col]
+        row = {'teamname': name}
+        for f in agg_features:
+            valid = group[f].notna()
+            x = group.loc[valid, f]
+            w = w_all[valid]
+            w_sum = w.sum()
+            if w_sum == 0 or len(x) == 0:
+                row[f] = np.nan
+                row[f'{f}_std'] = np.nan
+            else:
+                wm = (w * x).sum() / w_sum
+                ws = np.sqrt(((w * (x - wm) ** 2).sum() / w_sum))
+                row[f] = wm
+                row[f'{f}_std'] = ws
+        # weighted win rate
+        w_sum_all = w_all.sum()
+        row['result'] = (w_all * group['result']).sum() / w_sum_all if w_sum_all > 0 else np.nan
+        records.append(row)
+    return pd.DataFrame(records).set_index('teamname')
+
+
+def build_team_profiles(team_df, half_life_days=180):
     '''
     builds team profiles from team_df
     Args:
         team_df (dataframe): filtered team stats from data
+        half_life_days (int): exponential decay half-life in days;
+            games this many days old count half as much as the most recent game
     
     Returns:
-        (dataframe) of each team's average stats
+        (dataframe) of each team's recency-weighted average stats
     '''
+    team_df = team_df.copy()
 
-    #aggregate features to go from row = game --> row = team
+    # compute exponential decay weights so recent games matter more
+    team_df['date'] = pd.to_datetime(team_df['date'])
+    most_recent = team_df['date'].max()
+    team_df['days_ago'] = (most_recent - team_df['date']).dt.days
+    team_df['decay_weight'] = np.exp(-np.log(2) * team_df['days_ago'] / half_life_days)
+
     agg_features = [
         'golddiffat15', 'xpdiffat15', 'csdiffat15',
         'firstdragon', 'firstbaron', 'firsttower',
@@ -72,9 +113,13 @@ def build_team_profiles(team_df):
         'gamelength', 'ckpm'
     ]
 
-    mean_stats = team_df.groupby('teamname')[agg_features].mean()
-    std_stats = team_df.groupby('teamname')[agg_features].std()
-    win_rate = team_df.groupby('teamname')['result'].mean()
+    stats = _weighted_agg(team_df, agg_features, 'decay_weight')
+
+    mean_cols = agg_features
+    std_cols  = [f'{f}_std' for f in agg_features]
+    mean_stats = stats[mean_cols]
+    std_stats  = stats[std_cols]
+    win_rate   = stats['result']
 
     # get home region not just league
     regional_df  = team_df[team_df['league'].isin(regional_league_map.keys())]
@@ -85,9 +130,6 @@ def build_team_profiles(team_df):
         .map(regional_league_map)
     )
 
-    # rename columns
-    std_stats.columns = [f'{c}_std' for c in std_stats.columns]
-
     team_profiles = mean_stats.join(std_stats).join(win_rate).join(team_region.rename('region'))
     team_profiles.reset_index(inplace=True)
 
@@ -95,10 +137,6 @@ def build_team_profiles(team_df):
     team_profiles['region'] = team_profiles['region'].fillna('Unknown')
     team_profiles.fillna(team_profiles.mean(numeric_only=True), inplace=True)
 
-    # print(team_profiles.shape)       # (num_teams, ~21 columns)
-    # print(team_profiles.head())
-    # print(team_profiles.isnull().sum())  # check for NaNs
-    
     return team_profiles
 
 def build_region_weights(team_df):
