@@ -109,8 +109,8 @@ def predict_matchup(team_a, team_b, team_profiles, model, scaler, feature_cols, 
         for col in feature_cols:
             if col in stat_map:
                 stat = stat_map[col]
-                a_val = np.random.normal(a[stat], a[f'{stat}_std'])
-                b_val = np.random.normal(b[stat], b[f'{stat}_std'])
+                a_val = np.random.normal(a[stat], a[f'{stat}_std']) * a_weight # account for blue/red side bias
+                b_val = np.random.normal(b[stat], b[f'{stat}_std']) * b_weight
                 matchup_features.append(a_val - b_val)
 
             # predict objectives with Bradley-Terry normalization
