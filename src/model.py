@@ -74,13 +74,43 @@ def evaluate_model(model, x_test_scaled, y_test, feature_cols):
     print(weights)
     return
 
-def predict_matchup(team_a, team_b, team_profiles, model, scaler, feature_cols, region_weights = None, n_simulations=10000):
-    
+def _simulate_side(blue, red, blue_weight, red_weight, model, scaler, feature_cols, stat_map, objective_stats, n_simulations):
+    '''
+    Monte Carlo simulation treating `blue` as the blue-side team.
+    Returns the average predicted win probability for the blue team.
+    '''
+    win_count = 0
+    for _ in range(n_simulations):
+        matchup_features = []
+
+        for col in feature_cols:
+            if col in stat_map:
+                stat = stat_map[col]
+                blue_val = np.random.normal(blue[stat], blue[f'{stat}_std']) * blue_weight
+                red_val  = np.random.normal(red[stat],  red[f'{stat}_std'])  * red_weight
+                matchup_features.append(blue_val - red_val)
+
+            elif col in [f'{s}_blue' for s in objective_stats]:
+                stat = col.replace('_blue', '')
+                blue_rate = blue[stat] * blue_weight
+                red_rate  = red[stat]  * red_weight
+                prob_blue_gets_it = blue_rate / (blue_rate + red_rate)
+                matchup_features.append(prob_blue_gets_it)
+
+        features_array  = np.array(matchup_features).reshape(1, -1)
+        features_scaled = scaler.transform(features_array)
+        win_prob = model.predict_proba(features_scaled)[0][1]
+        win_count += win_prob
+
+    return win_count / n_simulations
+
+
+def predict_matchup(team_a, team_b, team_profiles, model, scaler, feature_cols, region_weights=None, n_simulations=10000):
+
     # get each team's profile
     a = team_profiles[team_profiles['teamname'] == team_a].iloc[0]
     b = team_profiles[team_profiles['teamname'] == team_b].iloc[0]
 
-    # map from feature col name to the underlying stat name
     stat_map = {
         'diff_golddiffat15': 'golddiffat15',
         'diff_xpdiffat15':   'xpdiffat15',
@@ -99,34 +129,11 @@ def predict_matchup(team_a, team_b, team_profiles, model, scaler, feature_cols, 
         a_weight = region_weights.get(a['region'], 1.0)
         b_weight = region_weights.get(b['region'], 1.0)
 
-    # simulate game n times to get win probability
-    win_count = 0
+    # run simulations from both side assignments and average to remove blue-side bias
+    prob_a_as_blue = _simulate_side(a, b, a_weight, b_weight, model, scaler, feature_cols, stat_map, objective_stats, n_simulations)
+    prob_a_as_red  = 1 - _simulate_side(b, a, b_weight, a_weight, model, scaler, feature_cols, stat_map, objective_stats, n_simulations)
 
-    for _ in range(n_simulations):
-        matchup_features = []
-
-        # simulate differential features
-        for col in feature_cols:
-            if col in stat_map:
-                stat = stat_map[col]
-                a_val = np.random.normal(a[stat], a[f'{stat}_std']) * a_weight # account for blue/red side bias
-                b_val = np.random.normal(b[stat], b[f'{stat}_std']) * b_weight
-                matchup_features.append(a_val - b_val)
-
-            # predict objectives with Bradley-Terry normalization
-            elif col in [f'{s}_blue' for s in objective_stats]:
-                stat = col.replace('_blue', '')
-                a_rate = a[stat] * a_weight
-                b_rate = b[stat] * b_weight
-                prob_a_gets_it = a_rate / (a_rate + b_rate)
-                matchup_features.append(prob_a_gets_it)
-
-        features_array = np.array(matchup_features).reshape(1, -1)
-        features_scaled = scaler.transform(features_array)
-        win_prob = model.predict_proba(features_scaled)[0][1]
-        win_count += win_prob
-
-    avg_win_prob = win_count / n_simulations
+    avg_win_prob = (prob_a_as_blue + prob_a_as_red) / 2
 
     print(f"\n{team_a} vs {team_b}")
     print(f"  {team_a} ({a['region']}, weight: {a_weight:.3f}): {avg_win_prob:.2%}")
