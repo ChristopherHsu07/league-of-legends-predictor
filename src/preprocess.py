@@ -87,13 +87,16 @@ def _weighted_agg(team_df, agg_features, weight_col):
     return pd.DataFrame(records).set_index('teamname')
 
 
-def build_team_profiles(team_df, half_life_days=180):
+def build_team_profiles(team_df, half_life_days=180, intl_boost=1.0):
     '''
     builds team profiles from team_df
     Args:
         team_df (dataframe): filtered team stats from data
         half_life_days (int): exponential decay half-life in days;
             games this many days old count half as much as the most recent game
+        intl_boost (float): multiplier applied to the weight of international
+            games (WLDs, MSI, EWC, etc.). Use >1.0 when predicting international
+            matchups; keep at 1.0 for domestic predictions.
     
     Returns:
         (dataframe) of each team's recency-weighted average stats
@@ -105,6 +108,11 @@ def build_team_profiles(team_df, half_life_days=180):
     most_recent = team_df['date'].max()
     team_df['days_ago'] = (most_recent - team_df['date']).dt.days
     team_df['decay_weight'] = np.exp(-np.log(2) * team_df['days_ago'] / half_life_days)
+
+    if intl_boost != 1.0:
+        intl_leagues = {'WLDs', 'MSI', 'EWC', 'FST', 'Asia Master', 'IC'}
+        intl_mask = team_df['league'].isin(intl_leagues)
+        team_df.loc[intl_mask, 'decay_weight'] *= intl_boost
 
     agg_features = [
         'golddiffat15', 'xpdiffat15', 'csdiffat15',

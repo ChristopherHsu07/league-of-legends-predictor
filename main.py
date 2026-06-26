@@ -15,7 +15,9 @@ filenames = [
 ]
 team_df = build_team_df(filenames)
 
-team_profiles = build_team_profiles(team_df)
+INTERNATIONAL_MODE = True  # set to False for domestic predictions
+
+team_profiles = build_team_profiles(team_df, intl_boost=3.0 if INTERNATIONAL_MODE else 1.0)
 matchups = build_matchups(team_df)
 
 region_weights = build_region_weights(team_df)
