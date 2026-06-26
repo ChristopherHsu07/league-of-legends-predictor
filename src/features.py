@@ -14,6 +14,10 @@ def build_matchups(team_df):
     team_df = team_df.copy()
     team_df['killdiffat25'] = team_df['killsat25'] - team_df['opp_killsat25']
 
+    # compute each team's historical win rate before splitting by side
+    team_winrates = team_df.groupby('teamname')['result'].mean()
+    team_df['win_rate'] = team_df['teamname'].map(team_winrates)
+
     blue = team_df[team_df['side'] == 'Blue'].copy()
     red  = team_df[team_df['side'] == 'Red'].copy()
 
@@ -26,7 +30,9 @@ def build_matchups(team_df):
     ]
     for f in diff_features:
         matchups[f'diff_{f}'] = matchups[f'{f}_blue'] - matchups[f'{f}_red']
-    
+
+    matchups['diff_win_rate'] = matchups['win_rate_blue'] - matchups['win_rate_red']
+
     matchups['blue_win'] = matchups['result_blue']
     matchups = matchups.dropna()
 

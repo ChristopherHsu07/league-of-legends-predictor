@@ -24,7 +24,8 @@ def train_model(matchups):
     # choose featuers
     diff_cols = [
         'diff_golddiffat15', 'diff_xpdiffat15', 'diff_csdiffat15',
-        'diff_golddiffat25', 'diff_killdiffat25', 'diff_gamelength', 'diff_ckpm'
+        'diff_golddiffat25', 'diff_killdiffat25', 'diff_gamelength', 'diff_ckpm',
+        'diff_win_rate',
     ]
     objective_cols = ['firstdragon_blue', 'firstbaron_blue', 'firsttower_blue']
 
@@ -96,6 +97,9 @@ def _simulate_side(blue, red, blue_weight, red_weight, model, scaler, feature_co
                 red_rate  = red[stat]  * red_weight
                 prob_blue_gets_it = blue_rate / (blue_rate + red_rate)
                 matchup_features.append(prob_blue_gets_it)
+
+            elif col == 'diff_win_rate':
+                matchup_features.append(blue['result'] - red['result'])
 
         features_array  = np.array(matchup_features).reshape(1, -1)
         features_scaled = scaler.transform(features_array)
