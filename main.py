@@ -9,8 +9,11 @@ from src.model import evaluate_model
 from src.model import predict_matchup
 
 warnings.filterwarnings('ignore')
-filename = "data/2025_LoL_esports_match_data_from_OraclesElixir.csv"
-team_df = build_team_df(filename)
+filenames = [
+    "data/2025_LoL_esports_match_data_from_OraclesElixir.csv",
+    "data/2026_LoL_esports_match_data_from_OraclesElixir.csv",
+]
+team_df = build_team_df(filenames)
 
 team_profiles = build_team_profiles(team_df)
 matchups = build_matchups(team_df)

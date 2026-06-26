@@ -17,20 +17,26 @@ regional_league_map = {
     'TCL':   'TCL',
 }
 
-def build_team_df(filename):
+def build_team_df(filenames):
     '''
     filters and builds team_df from OraclesElixer csv
 
     Args:
-        filename (str): name of csv file
+        filenames (str | list[str]): path(s) to csv file(s)
     
     Returns:
         (dataframe) filtered team stats from data
     '''
-    df = pd.read_csv(filename)
+    if isinstance(filenames, str):
+        filenames = [filenames]
 
-    #filter to only team performance
-    team_df = df[df['position'] == 'team'].copy()
+    frames = []
+    for filename in filenames:
+        df = pd.read_csv(filename)
+        frames.append(df[df['position'] == 'team'].copy())
+
+    team_df = pd.concat(frames, ignore_index=True)
+    team_df = team_df.drop_duplicates(subset=['gameid', 'side'], keep='last')
 
     # predictors
     features = [
