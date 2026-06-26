@@ -109,7 +109,7 @@ def _simulate_side(blue, red, blue_weight, red_weight, model, scaler, feature_co
     return win_count / n_simulations
 
 
-def predict_matchup(team_a, team_b, team_profiles, model, scaler, feature_cols, region_weights=None, n_simulations=10000):
+def predict_matchup(team_a, team_b, team_profiles, model, scaler, feature_cols, region_weights=None, n_simulations=10000, verbose=False):
 
     # get each team's profile
     a = team_profiles[team_profiles['teamname'] == team_a].iloc[0]
@@ -139,8 +139,9 @@ def predict_matchup(team_a, team_b, team_profiles, model, scaler, feature_cols, 
 
     avg_win_prob = (prob_a_as_blue + prob_a_as_red) / 2
 
-    print(f"\n{team_a} vs {team_b}")
-    print(f"  {team_a} ({a['region']}, weight: {a_weight:.3f}): {avg_win_prob:.2%}")
-    print(f"  {team_b} ({b['region']}, weight: {b_weight:.3f}): {1 - avg_win_prob:.2%}")
+    if verbose:
+        print(f"\n{team_a} vs {team_b}")
+        print(f"  {team_a} ({a['region']}, weight: {a_weight:.3f}): {avg_win_prob:.2%}")
+        print(f"  {team_b} ({b['region']}, weight: {b_weight:.3f}): {1 - avg_win_prob:.2%}")
 
     return avg_win_prob

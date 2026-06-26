@@ -147,7 +147,7 @@ def build_team_profiles(team_df, half_life_days=180, intl_boost=1.0):
 
     return team_profiles
 
-def build_region_weights(team_df):
+def build_region_weights(team_df, verbose=False):
     # map regional leagues to their region
 
     intl_leagues = ['WLDs', 'MSI', 'EWC', 'FST', 'Asia Master', 'IC']
@@ -165,7 +165,8 @@ def build_region_weights(team_df):
     intl_df = team_df[team_df['league'].isin(intl_leagues)].copy()
 
     if intl_df.empty:
-        print("warning: no international data found, using equal weights")
+        if verbose:
+            print("warning: no international data found, using equal weights")
         return {}
 
     # attach home region to each international game
@@ -173,26 +174,29 @@ def build_region_weights(team_df):
 
     # drop teams we couldn't map to a region
     unmapped = intl_df[intl_df['region'].isna()]['teamname'].unique()
-    if len(unmapped) > 0:
+    if verbose and len(unmapped) > 0:
         print(f"warning: could not map these teams to a region: {unmapped}")
     intl_df = intl_df.dropna(subset=['region'])
 
-    print(f"Building region weights from {len(intl_df)} international games")
+    if verbose:
+        print(f"Building region weights from {len(intl_df)} international games")
 
     # win rate per region at international events
     region_winrates = intl_df.groupby('region')['result'].mean()
     region_counts   = intl_df.groupby('region')['result'].count()
 
-    print("\nRaw international win rates:")
-    for region in region_winrates.sort_values(ascending=False).index:
-        print(f"  {region}: {region_winrates[region]:.3f} ({region_counts[region]} games)")
+    if verbose:
+        print("\nRaw international win rates:")
+        for region in region_winrates.sort_values(ascending=False).index:
+            print(f"  {region}: {region_winrates[region]:.3f} ({region_counts[region]} games)")
 
     # normalize around 1.0
     mean_wr = region_winrates.mean()
     region_weights = (region_winrates / mean_wr).to_dict()
 
-    print("\nNormalized region weights:")
-    for region, weight in sorted(region_weights.items(), key=lambda x: -x[1]):
-        print(f"  {region}: {weight:.3f}")
+    if verbose:
+        print("\nNormalized region weights:")
+        for region, weight in sorted(region_weights.items(), key=lambda x: -x[1]):
+            print(f"  {region}: {weight:.3f}")
 
     return region_weights

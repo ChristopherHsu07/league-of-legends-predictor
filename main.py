@@ -20,8 +20,8 @@ INTERNATIONAL_MODE = True  # set to False for domestic predictions
 team_profiles = build_team_profiles(team_df, intl_boost=3.0 if INTERNATIONAL_MODE else 1.0)
 matchups = build_matchups(team_df)
 
-region_weights = build_region_weights(team_df)
+region_weights = build_region_weights(team_df, verbose=True)
 
 model, scaler, feature_cols, x_test_scaled, y_test = train_model(matchups)
 
-print(predict_matchup("T1", "Cloud9", team_profiles, model, scaler, feature_cols, region_weights))
+print(predict_matchup("T1", "Cloud9", team_profiles, model, scaler, feature_cols, region_weights, verbose=True))
