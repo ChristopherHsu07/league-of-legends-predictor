@@ -54,7 +54,7 @@ python predict_playin.py
 
 | Matchup | Predicted Winner | Confidence | Actual Result |
 |---|---|---|---|
-| Karmine Corp vs Team Liquid | Team Liquid | 55.2% | |
+| Karmine Corp vs Team Liquid | Team Liquid | 55.2% | Team Liquid |
 
 ### Main Event Qualifiers (predicted)
 
