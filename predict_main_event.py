@@ -61,12 +61,12 @@ print(f"  >>> {ub_r2_w1} advances ({conf_7:.1%} confidence), {ub_r2_l1} drops to
 ub_r2_w2, ub_r2_l2, conf_8 = predict_game(ub_r1_w3, ub_r1_w4)
 print(f"  >>> {ub_r2_w2} advances ({conf_8:.1%} confidence), {ub_r2_l2} drops to lower bracket")
 
-# Lower Bracket Round 2 (UB R2 losers vs LB R1 winners)
+# Lower Bracket Round 2 (UB R2 losers vs LB R1 winners, cross-matched)
 print("\n--- LOWER BRACKET ROUND 2 ---")
-lb_r2_w1, lb_r2_l1, conf_9 = predict_game(ub_r2_l1, lb_r1_w1)
+lb_r2_w1, lb_r2_l1, conf_9 = predict_game(ub_r2_l1, lb_r1_w2)
 print(f"  >>> {lb_r2_w1} advances ({conf_9:.1%} confidence), {lb_r2_l1} is ELIMINATED")
 
-lb_r2_w2, lb_r2_l2, conf_10 = predict_game(ub_r2_l2, lb_r1_w2)
+lb_r2_w2, lb_r2_l2, conf_10 = predict_game(ub_r2_l2, lb_r1_w1)
 print(f"  >>> {lb_r2_w2} advances ({conf_10:.1%} confidence), {lb_r2_l2} is ELIMINATED")
 
 # Upper Bracket Round 3 (semifinals)

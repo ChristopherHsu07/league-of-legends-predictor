@@ -40,9 +40,9 @@ See [PLAYIN_RESULTS.md](PLAYIN_RESULTS.md) for MSI 2026 Play-in predictions and 
 
 | Matchup | Predicted Winner | Confidence |
 |---|---|---|
-| Bilibili Gaming vs T1 | Bilibili Gaming | 53.3% |
+| Bilibili Gaming vs T1 | Bilibili Gaming | 53.2% |
 | LYON vs FURIA | FURIA | 59.8% |
-| Hanwha Life Esports vs Team Secret Whales | Hanwha Life Esports | 63.3% |
+| Hanwha Life Esports vs Team Secret Whales | Hanwha Life Esports | 63.6% |
 | G2 Esports vs Top Esports | G2 Esports | 67.7% |
 
 ### Lower Bracket Round 1
@@ -50,42 +50,42 @@ See [PLAYIN_RESULTS.md](PLAYIN_RESULTS.md) for MSI 2026 Play-in predictions and 
 | Matchup | Predicted Winner | Confidence |
 |---|---|---|
 | T1 vs LYON | T1 | 66.0% |
-| Team Secret Whales vs Top Esports | Team Secret Whales | 65.0% |
+| Team Secret Whales vs Top Esports | Team Secret Whales | 65.2% |
 
 ### Upper Bracket Round 2
 
 | Matchup | Predicted Winner | Confidence |
 |---|---|---|
 | Bilibili Gaming vs FURIA | Bilibili Gaming | 62.2% |
-| Hanwha Life Esports vs G2 Esports | Hanwha Life Esports | 61.9% |
+| Hanwha Life Esports vs G2 Esports | Hanwha Life Esports | 61.8% |
 
 ### Lower Bracket Round 2
 
 | Matchup | Predicted Winner | Confidence |
 |---|---|---|
-| T1 vs FURIA | T1 | 57.6% |
-| G2 Esports vs Team Secret Whales | G2 Esports | 52.3% |
+| FURIA vs Team Secret Whales | FURIA | 50.2% |
+| T1 vs G2 Esports | T1 | 56.0% |
 
 ### Upper Bracket Round 3
 
 | Matchup | Predicted Winner | Confidence |
 |---|---|---|
-| Hanwha Life Esports vs Bilibili Gaming | Hanwha Life Esports | 52.5% |
+| Hanwha Life Esports vs Bilibili Gaming | Hanwha Life Esports | 52.7% |
 
 ### Lower Bracket Round 3
 
 | Matchup | Predicted Winner | Confidence |
 |---|---|---|
-| T1 vs G2 Esports | T1 | 55.6% |
+| T1 vs FURIA | T1 | 57.5% |
 
 ### Lower Bracket Finals
 
 | Matchup | Predicted Winner | Confidence |
 |---|---|---|
-| Bilibili Gaming vs T1 | Bilibili Gaming | 53.3% |
+| Bilibili Gaming vs T1 | Bilibili Gaming | 53.5% |
 
 ### Grand Finals
 
 | Matchup | Predicted Winner | Confidence |
 |---|---|---|
-| Hanwha Life Esports vs Bilibili Gaming | Hanwha Life Esports | 53.1% |
+| Hanwha Life Esports vs Bilibili Gaming | Hanwha Life Esports | 52.9% |
