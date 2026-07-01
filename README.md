@@ -56,9 +56,8 @@ python predict_playin.py
 |---|---|---|---|
 | Karmine Corp vs Team Liquid | Team Liquid | 55.2% | Team Liquid |
 
-### Main Event Qualifiers (predicted)
+### Grand Finals
 
-| Place | Team |
-|---|---|
-| 1 | T1 |
-| 2 | Team Liquid |
+| Matchup | Predicted Winner | Confidence | Actual Result |
+|---|---|---|---|
+| Team Liquid vs T1 | T1 | 54.6% | T1 |
