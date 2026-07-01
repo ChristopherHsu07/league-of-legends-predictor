@@ -27,37 +27,65 @@ python main.py
 
 # Run the MSI 2026 Play-in bracket predictor
 python predict_playin.py
+
+# Run the MSI 2026 Main Event bracket predictor
+python predict_main_event.py
 ```
 
-## MSI 2026 Play-in Predictions
+See [PLAYIN_RESULTS.md](PLAYIN_RESULTS.md) for MSI 2026 Play-in predictions and results.
 
-### Round 1 — Upper Bracket
+## MSI 2026 Main Event Predictions
 
-| Matchup | Predicted Winner | Confidence | Actual Result |
-|---|---|---|---|
-| T1 vs Team Liquid | T1 | 54.8% | T1 |
-| Karmine Corp vs Deep Cross Gaming | Karmine Corp | 54.3% | Karmine Corp |
+### Upper Bracket Round 1
 
-### Upper Bracket Finals
+| Matchup | Predicted Winner | Confidence |
+|---|---|---|
+| Bilibili Gaming vs T1 | Bilibili Gaming | 53.3% |
+| LYON vs FURIA | FURIA | 59.8% |
+| Hanwha Life Esports vs Team Secret Whales | Hanwha Life Esports | 63.3% |
+| G2 Esports vs Top Esports | G2 Esports | 67.7% |
 
-| Matchup | Predicted Winner | Confidence | Actual Result |
-|---|---|---|---|
-| T1 vs Karmine Corp | T1 | 59.7% | T1 |
+### Lower Bracket Round 1
 
-### Lower Bracket Semifinals
+| Matchup | Predicted Winner | Confidence |
+|---|---|---|
+| T1 vs LYON | T1 | 66.0% |
+| Team Secret Whales vs Top Esports | Team Secret Whales | 65.0% |
 
-| Matchup | Predicted Winner | Confidence | Actual Result |
-|---|---|---|---|
-| Team Liquid vs Deep Cross Gaming | Team Liquid | 59.4% | Team Liquid |
+### Upper Bracket Round 2
+
+| Matchup | Predicted Winner | Confidence |
+|---|---|---|
+| Bilibili Gaming vs FURIA | Bilibili Gaming | 62.2% |
+| Hanwha Life Esports vs G2 Esports | Hanwha Life Esports | 61.9% |
+
+### Lower Bracket Round 2
+
+| Matchup | Predicted Winner | Confidence |
+|---|---|---|
+| T1 vs FURIA | T1 | 57.6% |
+| G2 Esports vs Team Secret Whales | G2 Esports | 52.3% |
+
+### Upper Bracket Round 3
+
+| Matchup | Predicted Winner | Confidence |
+|---|---|---|
+| Hanwha Life Esports vs Bilibili Gaming | Hanwha Life Esports | 52.5% |
+
+### Lower Bracket Round 3
+
+| Matchup | Predicted Winner | Confidence |
+|---|---|---|
+| T1 vs G2 Esports | T1 | 55.6% |
 
 ### Lower Bracket Finals
 
-| Matchup | Predicted Winner | Confidence | Actual Result |
-|---|---|---|---|
-| Karmine Corp vs Team Liquid | Team Liquid | 55.2% | Team Liquid |
+| Matchup | Predicted Winner | Confidence |
+|---|---|---|
+| Bilibili Gaming vs T1 | Bilibili Gaming | 53.3% |
 
 ### Grand Finals
 
-| Matchup | Predicted Winner | Confidence | Actual Result |
-|---|---|---|---|
-| Team Liquid vs T1 | T1 | 54.6% | T1 |
+| Matchup | Predicted Winner | Confidence |
+|---|---|---|
+| Hanwha Life Esports vs Bilibili Gaming | Hanwha Life Esports | 53.1% |
