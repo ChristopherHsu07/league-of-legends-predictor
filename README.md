@@ -45,11 +45,9 @@ Running `main.py` prints region weights, win-rate control accuracy, `predict_mat
 International test games use intl-boosted profiles and region weights; domestic test games do not.
 
 ```bash
-# Run the MSI 2026 Play-in bracket predictor
-python predict_playin.py
-
-# Run the MSI 2026 Main Event bracket predictor
-python predict_main_event.py
+# Run the Worlds 2026 Swiss stage predictor
+# Prints each round's draw, then who finishes 3-0, 3-1, and 3-2
+python predict_swiss.py
 ```
 
-See [msi-2026/playin_results.md](msi-2026/playin_results.md) for MSI 2026 Play-in predictions and results, and [msi-2026/main_bracket_results.md](msi-2026/main_bracket_results.md) for Main Event predictions and results.
+See [worlds-2026/swiss_results.md](worlds-2026/swiss_results.md) for Worlds 2026 Swiss predictions. See [msi-2026/playin_results.md](msi-2026/playin_results.md) for MSI 2026 Play-in predictions and results, and [msi-2026/main_bracket_results.md](msi-2026/main_bracket_results.md) for Main Event predictions and results.
