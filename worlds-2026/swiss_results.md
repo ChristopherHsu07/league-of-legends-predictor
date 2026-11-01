@@ -80,6 +80,8 @@ Draw seed 2026. Later rounds are paired at random among teams with the same reco
 | Invictus Gaming vs G2 Esports | G2 Esports | 54.4% | |
 | T1 vs Anyone's Legend | T1 | 58.8% | |
 
+The match tables above are the model's simulated draw, not the real Swiss pairings, so those Actual Result cells stay empty. The known result is who advanced. The quarterfinal draw is in [knockout_results.md](knockout_results.md).
+
 ## Summary
 
 | Record | Predicted | Actual |
@@ -87,4 +89,6 @@ Draw seed 2026. Later rounds are paired at random among teams with the same reco
 | 3-0 | Bilibili Gaming, Gen.G | |
 | 3-1 | Hanwha Life Esports, Karmine Corp, Team Liquid | |
 | 3-2 | Dplus Kia, G2 Esports, T1 | |
-| Advance | Bilibili Gaming, Gen.G, Hanwha Life Esports, Karmine Corp, Team Liquid, Dplus Kia, G2 Esports, T1 | |
+| Advance | Bilibili Gaming, Gen.G, Hanwha Life Esports, Karmine Corp, Team Liquid, Dplus Kia, G2 Esports, T1 | Bilibili Gaming, Dplus Kia, Gen.G, Invictus Gaming, Karmine Corp, LYON, T1, Top Esports |
+
+- **Advancement accuracy:** 5 / 8. Missed Hanwha Life Esports, Team Liquid, and G2 Esports. Actual field added Invictus Gaming, LYON, and Top Esports.

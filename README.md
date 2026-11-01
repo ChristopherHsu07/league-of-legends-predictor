@@ -48,6 +48,9 @@ International test games use intl-boosted profiles and region weights; domestic 
 # Run the Worlds 2026 Swiss stage predictor
 # Prints each round's draw, then who finishes 3-0, 3-1, and 3-2
 python predict_swiss.py
+
+# Run the Worlds 2026 knockout predictor (best of five)
+python predict_knockout.py
 ```
 
-See [worlds-2026/swiss_results.md](worlds-2026/swiss_results.md) for Worlds 2026 Swiss predictions. See [msi-2026/playin_results.md](msi-2026/playin_results.md) for MSI 2026 Play-in predictions and results, and [msi-2026/main_bracket_results.md](msi-2026/main_bracket_results.md) for Main Event predictions and results.
+See [worlds-2026/swiss_results.md](worlds-2026/swiss_results.md) for Worlds 2026 Swiss predictions and who actually advanced, and [worlds-2026/knockout_results.md](worlds-2026/knockout_results.md) for the knockout bracket. See [msi-2026/playin_results.md](msi-2026/playin_results.md) for MSI 2026 Play-in predictions and results, and [msi-2026/main_bracket_results.md](msi-2026/main_bracket_results.md) for Main Event predictions and results.
